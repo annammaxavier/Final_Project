@@ -1,0 +1,81 @@
+﻿@page "/addupdateemployee"
+@page "/updateemployee/{EmployeeID:int}"
+@using EmployeeM.Services.Employeeservices
+@using EmployeeM.Data
+@inject IEmployeeRepository _employeeRepository
+<h3>Add Update Employee</h3>
+<div class="row">
+    <div class="col-md-6">
+        <div class="mb-3">
+            <label class="form-label">Employee Id:</label>
+            <Input type="text" @bind-="employeeId" class="form-control" placeholder="Employee Id" readonly />
+        </div>
+        <div class="mb-3">
+            <label class="form-label">Employee First Name:</label>
+            <Input type="text" @bind-="employeeFirstName" class="form-control" placeholder="Employee First Name"  />
+        </div>
+        <div class="mb-3">
+            <label class="form-label">Employee Last Name:</label>
+            <Input type="text" @bind-="employeeLastName" class="form-control" placeholder="Employee Last Name" />
+        </div>
+        <div class="mb-3">
+            <label class="form-label">Employee Position:</label>
+            <Input type="text" @bind-="employeeposition" class="form-control" placeholder="Employee Position" />
+        </div>
+        <div class="mb-3">
+            <label class="form-label">Employee Salary:</label>
+            <Input type="text" @bind-="employeesalary" class="form-control" placeholder="Employee Salary"  />
+        </div>
+        <div class="mb-3">
+            <label class="form-label">Employee Date Of Joing:</label>
+            <Input type="text" @bind-="employeedateOfJoing" class="form-control" placeholder="Employee Date Of Joing"  />
+        </div>
+        <button type="submit" class="btn btn-sm btn-success" @onclick="AddEmployeeInfo">Submit</button>
+
+    </div>
+    </div>
+
+@code {
+    [Parameter]
+    public int EmployeeID { get; set; }
+    private int employeeId=0;
+    private string employeeFirstName = "";
+    private string employeeLastName = "";
+    private string employeeposition = "";
+    private decimal employeesalary = 0;
+    private DateTime employeedateOfJoing;
+    protected async override void OnInitialized()
+    {
+        base.OnInitialized();
+        employeeId = EmployeeID;
+    }
+
+    public async void AddEmployeeInfo()
+    {
+
+        
+        var employeeinfo =  new employeeInfo();
+        int EmployeeId = employeeId;
+        string EmployeeFirstName = employeeFirstName;
+        string EmployeeLastName = employeeLastName;
+        string EmployeePosition = employeeposition;
+        decimal EmployeeSalary = employeesalary;
+        DateTime EmployeeDateOfJoing = employeedateOfJoing;
+     
+        var response = await _employeeRepository.AddUpdateEmployeeAsync(employeeInfo);
+
+            if (response)
+        {
+            await App.Current.MainPage.DisplayAlert("Saved", "Save Success", "ok");
+
+        }
+        else
+        {
+            await App.Current.MainPage.DisplayAlert("Updated", "Update Success", "ok");
+        }
+    }
+   
+    
+
+}
+
